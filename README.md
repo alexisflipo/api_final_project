@@ -45,11 +45,16 @@ Then, click on the link provided by the terminal logs. You can now request the A
 
 If you want to check if it working  with a production environment you can try it by running these following commands:
 
-`docker build -t fastapidssalary:latest -f Dockerfile .`
+Uncomment these two lines :
 
-Once it is finished just run:
+```
+# ARG PORT_N=80
+# ENV PORT=$PORT_N
+```
 
-`docker run -p 80:80 fastapidssalary:latest`
+Run `docker build -t fastapidssalary:latest -f Dockerfile .`
+
+Once it is finished just run `docker run -p 80:80 fastapidssalary:latest`
 
 Now you can click on the like provided by the terminal logs or access to `http://0.0.0.0:80` in the url bar.
 

@@ -4,6 +4,9 @@ FROM tiangolo/uvicorn-gunicorn:python3.8
 WORKDIR /src
 COPY requirements.txt ./requirements.txt
 
+# ARG PORT_N=80
+# ENV PORT=$PORT_N
+
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 COPY ./start.sh .
