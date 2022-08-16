@@ -45,7 +45,7 @@ Then, click on the link provided by the terminal logs. You can now request the A
 
 If you want to check if it working  with a production environment you can try it by running these following commands:
 
-Uncomment these two lines :
+Uncomment these two lines in the Dockerfile:
 
 ```
 # ARG PORT_N=80
