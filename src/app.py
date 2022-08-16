@@ -1,5 +1,4 @@
 from typing import Optional, Any
-import uvicorn
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from joblib import load
@@ -45,9 +44,3 @@ async def predict(q: Optional[Any] = None):
         raise HTTPException(status_code=400, detail="Bad request, the query is missing or invalid")
     prediction = {"hello": q}
     return prediction
-
-# if __name__ == '__main__':
-#     port = os.getenv('PORT', default=8000)
-#     config = uvicorn.Config("app:app", host='0.0.0.0', port=port, reload=True)
-#     server = uvicorn.Server(config)
-#     server.run()
