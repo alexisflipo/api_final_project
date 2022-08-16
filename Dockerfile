@@ -7,6 +7,7 @@ COPY requirements.txt ./requirements.txt
 # Install the dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+
 COPY ./src/ ./src
 
 # Run by specifying the host and port

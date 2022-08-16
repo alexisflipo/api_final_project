@@ -39,9 +39,8 @@ def read_root():
 
 
 @app.get("/predict", status_code=200)
-async def predict(q: Any = None):
+async def predict(q: Optional[Any] = None):
     if not (q):
-        print(q)
         raise HTTPException(status_code=400, detail="Bad request, the query is missing or invalid")
-    a = {"hello": q}
-    return a
+    prediction = {"hello": q}
+    return prediction
