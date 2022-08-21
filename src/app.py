@@ -37,7 +37,9 @@ def read_root():
 # PREDICT ROUTE WITH PREDICTIONS VALUES RETURNED
 # ----------------------------------------------
 
-
+@app.on_event('startup')
+async def load_model():
+    model = load('src/ml_scripts/models/lasso_model.joblib')
 @app.get("/predict", status_code=200)
 async def predict(q: Optional[Any] = None):
     if not (q):
