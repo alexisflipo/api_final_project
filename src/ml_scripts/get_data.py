@@ -183,35 +183,17 @@ def split_train_test(X: set, y: set):
     )
     return X_train, X_test, y_train, y_test
 
-
-# def set_model_with_grisearch() -> GridSearchCV:
-#     params_lasso = {
-#         "alpha": np.arange(0.1, 1.0, 0.1),
-#         "copy_X": [True, False],
-#         "max_iter": np.arange(1000, 30000, 5000),
-#         "normalize": [False, True],
-#         "positive": [False, True],
-#         "precompute": [False, True],
-#         "selection": ["cyclic", "random"],
-#         "warm_start": [False, True],
-#     }
-#     lasso_mdl = Lasso(alpha=0.1, random_state=42)
-#     grid = GridSearchCV(lasso_mdl, param_grid=params_lasso, cv=5)
-#     return grid
-
-
 def train(X_train: set, y_train: set):
     lasso_model = Lasso(alpha=0.1, random_state=42)
     lasso_model.fit(X_train, y_train)
     return lasso_model
 
 
-def score_and_predict(best_model, X_test, y_test):
-    lasso_best_params = best_model
-    score = lasso_best_params.score(X_test, y_test)
-    return score
-
-
+def score_accuracy(best_model, X_test, y_test):
+    score = best_model.score(X_test, y_test)
+    score_arr = np.asarray([score])
+    pd.DataFrame(score_arr, columns=['Score']).to_csv('src/ml_scripts/models/score_first_model.csv')  
+    
 def save_model(lasso_best_params):
     with open('src/ml_scripts/models/lasso_model.sav', 'wb') as f:
         pickle.dump(lasso_best_params, f)
@@ -226,7 +208,7 @@ def main():
     X, y = set_x_y(final_df)
     X_train, X_test, y_train, y_test = train_test_split(X, y)
     model = train(X_train, y_train)
-    score = score_and_predict(model, X_test, y_test)
+    score_accuracy(model, X_test, y_test)
     save_model(model)
 
 
