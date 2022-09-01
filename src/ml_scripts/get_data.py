@@ -1,4 +1,5 @@
 import csv
+from importlib.resources import read_binary
 from os import PathLike
 import pandas as pd
 import numpy as np
@@ -8,6 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import Lasso
 from joblib import dump
 import logging
+import pickle
 
 africa = 4
 oceania = 3
@@ -182,27 +184,26 @@ def split_train_test(X: set, y: set):
     return X_train, X_test, y_train, y_test
 
 
-def set_model_with_grisearch() -> GridSearchCV:
-    params_lasso = {
-        "alpha": np.arange(0.1, 1.0, 0.1),
-        "copy_X": [True, False],
-        "max_iter": np.arange(1000, 30000, 5000),
-        "normalize": [False, True],
-        "positive": [False, True],
-        "precompute": [False, True],
-        "selection": ["cyclic", "random"],
-        "warm_start": [False, True],
-    }
-    lasso_mdl = Lasso(alpha=0.1, random_state=42)
-    grid = GridSearchCV(lasso_mdl, param_grid=params_lasso, cv=5)
-    return grid
+# def set_model_with_grisearch() -> GridSearchCV:
+#     params_lasso = {
+#         "alpha": np.arange(0.1, 1.0, 0.1),
+#         "copy_X": [True, False],
+#         "max_iter": np.arange(1000, 30000, 5000),
+#         "normalize": [False, True],
+#         "positive": [False, True],
+#         "precompute": [False, True],
+#         "selection": ["cyclic", "random"],
+#         "warm_start": [False, True],
+#     }
+#     lasso_mdl = Lasso(alpha=0.1, random_state=42)
+#     grid = GridSearchCV(lasso_mdl, param_grid=params_lasso, cv=5)
+#     return grid
 
 
-def train(grid: GridSearchCV, X_train: set, y_train: set):
-    grid = grid
-    grid.fit(X_train, y_train)
-    lasso_best_params = grid.best_estimator_
-    return lasso_best_params
+def train(X_train: set, y_train: set):
+    lasso_model = Lasso(alpha=0.1, random_state=42)
+    lasso_model.fit(X_train, y_train)
+    return lasso_model
 
 
 def score_and_predict(best_model, X_test, y_test):
@@ -212,8 +213,8 @@ def score_and_predict(best_model, X_test, y_test):
 
 
 def save_model(lasso_best_params):
-    dump(lasso_best_params, "src/ml_scripts/models/lasso_model.joblib")
-
+    with open('src/ml_scripts/models/lasso_model.sav', 'wb') as f:
+        pickle.dump(lasso_best_params, f)
 
 def main():
     df = get_data("src/ml_scripts/data/ds_salaries.csv")
@@ -223,13 +224,10 @@ def main():
     data_copy_preprocessed = remove_minority_values(data_copy_preprocessed)
     final_df = encode(data_copy_preprocessed)
     X, y = set_x_y(final_df)
-    print(X)
     X_train, X_test, y_train, y_test = train_test_split(X, y)
-    # grid = set_model_with_grisearch()
-    # model = train(grid, X_train, y_train)
-    # score = score_and_predict(model, X_test, y_test)
-    # logging.info(score)
-    # save_model(model)
+    model = train(X_train, y_train)
+    score = score_and_predict(model, X_test, y_test)
+    save_model(model)
 
 
 if __name__ == "__main__":
