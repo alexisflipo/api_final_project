@@ -37,7 +37,7 @@ def open_binaries_model():
 
 @app.get("/")
 def redirect_docs():
-    return RedirectResponse('http://localhost:8000/docs')
+    return RedirectResponse('https://ds-salary-predictions.herokuapp.com/docs')
 
 
 # ----------------------------------------------
