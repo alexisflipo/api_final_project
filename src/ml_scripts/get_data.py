@@ -192,14 +192,14 @@ def train(X_train: set, y_train: set):
 def score_accuracy(best_model, X_test, y_test):
     score = best_model.score(X_test, y_test)
     score_arr = np.asarray([score])
-    pd.DataFrame(score_arr, columns=['Score']).to_csv('src/ml_scripts/models/score_first_model.csv')  
+    pd.DataFrame(score_arr, columns=['Score']).to_csv('./ml_scripts/models/score_first_model.csv')  
     
 def save_model(lasso_best_params):
-    with open('src/ml_scripts/models/lasso_model.sav', 'wb') as f:
+    with open('./ml_scripts/models/lasso_model.sav', 'wb') as f:
         pickle.dump(lasso_best_params, f)
 
 def main():
-    df = get_data("src/ml_scripts/data/ds_salaries.csv")
+    df = get_data("./ml_scripts/data/ds_salaries.csv")
     data_copy = create_df_copy(df)
     data_copy_preprocessed = encode_employment_and_xp(data_copy)
     data_copy_preprocessed = encode_location_features(data_copy_preprocessed)
