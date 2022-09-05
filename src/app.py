@@ -31,7 +31,7 @@ app.add_middleware(
 # ----------------------------------------------
 
 def open_binaries_model():
-    with open('src/ml_scripts/models/lasso_model.sav', 'rb') as f:
+    with open('./ml_scripts/models/lasso_model.sav', 'rb') as f:
         model = pickle.load(f)
     return model
 
